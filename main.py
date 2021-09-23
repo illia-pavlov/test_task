@@ -34,11 +34,6 @@ token = "7464a935a833b06c98accde18a24f378"
 headers = {'Authorization': f'Token token="{token}"'}
 
 
-def email_login_check(act_data, expec_data):
-    print(act_data)
-    print(expec_data)
-    assert act_data == expec_data, "Login or email is not correct"
-
 
 def create_user():
     create_user_request = requests.post(f'{BASE_URL}users',
