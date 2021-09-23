@@ -1,16 +1,61 @@
-# This is a sample Python script.
+import requests
+import random
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+BASE_URL = 'https://favqs.com/api/'
+create_random_number = random.randint(0, 10000)
+update_random_number = random.randint(0, 10000)
+create_user_data = {
+    "user": {
+        "login": f'aurelius{create_random_number}',
+        "email": f'aurelius{create_random_number}@gmail.com',
+        "password": "Pa55word"
+    }
+}
 
+update_user_data = {
+    "user": {
+        "login": f'aurelius{update_random_number}',
+        "email": f'aurelius{update_random_number}@gmail.com',
+    }
+}
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+create_session_data = {
+    "user": {
+        "login": f'aurelius{create_random_number}',
+        "password": "Pa55word",
+    }
+}
 
+create_user_data_json = create_user_data
+update_user_data_json = update_user_data
+create_session_data_json = create_session_data
 
-# Press the green button in the gutter to run the script.
+token = "7464a935a833b06c98accde18a24f378"
+headers = {'Authorization': f'Token token="{token}"'}
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    create_user_request = requests.post(f'{BASE_URL}users',
+                                        json=create_user_data_json,
+                                        headers=headers)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    user_token = create_user_request.json()['User-Token']
+    headers_session_create = {'Authorization': f'Token token="{token}"',
+                              'User-Token': f'{user_token}'}
+
+    post_session_create = requests.post(f'{BASE_URL}session',
+                                        json=create_session_data_json,
+                                        headers=headers_session_create)
+
+    session_token = post_session_create.json()['User-Token']
+    headers_get_user = {'Authorization': f'Token token="{token}"',
+                        'User-Token': f'{session_token}'}
+
+    get_user_request = requests.get(f'{BASE_URL}users/{create_user_data_json["user"]["login"]}',
+                                    headers=headers_get_user)
+
+    update_user_request = requests.put(f'{BASE_URL}users/{create_session_data_json["user"]["login"]}',
+                                       json=update_user_data_json,
+                                       headers=headers_get_user)
+
+    get_user_request_upd = requests.get(f'{BASE_URL}users/{update_user_data_json["user"]["login"]}',
+                                        headers=headers_get_user)
