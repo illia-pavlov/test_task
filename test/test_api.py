@@ -11,8 +11,6 @@ def test_email_login_check():
             "password": "Pa55word"
         }
     }
-    print(actual_user_data_json)
-    print(create_user_data_json)
     assert actual_user_data_json == create_user_data_json, "Login or email is not correct"
 
 
@@ -26,6 +24,4 @@ def test_email_login_after_update_check():
             "email": f'{actual_email}'
         }
     }
-    print(actual_user_data_json)
-    print(update_user_data_json)
     assert actual_user_data_json == update_user_data_json, "Login or email is not correct"
